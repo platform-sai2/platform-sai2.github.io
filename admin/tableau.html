@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://iddpcjpqabulpiikjsct.supabase.co; base-uri 'self'; form-action 'self'">
+  <meta name="referrer" content="same-origin">
+  <title>Tableau de bord · Rapport statistique S&amp;I</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#7a0f2b">
+  <link rel="icon" type="image/png" href="../img/favicon.png">
+  <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <script src="../js/commun.js" defer></script>
+  <script src="../js/admin.js" defer></script>
+</head>
+<body class="page-admin">
+  <header class="entete">
+    <div class="soleil" aria-hidden="true"><span class="soleil__rayons"></span><span class="soleil__lueur"></span></div>
+
+    <div class="entete__barre conteneur">
+      <a class="marque" href="tableau.html">
+        <img src="../img/logo.png" alt="" width="46" height="46">
+        <span>Rapport <span class="masque-mobile">statistique </span>S&amp;I</span>
+      </a>
+      <div class="entete__actions">
+        <span class="direct" id="direct" data-etat="connexion" role="status">
+          <span class="direct__point" aria-hidden="true"></span><span class="direct__texte">Connexion</span>
+        </span>
+        <button type="button" class="btn btn--light btn--sm" id="copier-lien">
+          <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <span class="masque-mobile">Copier le lien du formulaire</span>
+        </button>
+        <a class="btn btn--souci btn--sm" id="exporter" href="https://iddpcjpqabulpiikjsct.supabase.co/functions/v1/api/admin/export.xlsx">
+          <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5M12 15V3"/></svg>
+          <span>Télécharger Excel</span>
+        </a>
+        <button type="button" class="btn btn--light btn--sm btn--icone" id="deconnexion" aria-label="Se déconnecter" title="Se déconnecter">
+          <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="appel conteneur" aria-live="polite">
+      <p class="appel__phrase">
+        <span class="appel__nombre" id="nb-recus" data-valeur="0">0</span>
+        <span class="appel__texte" id="appel-texte">pieux, districts, missions et branches sur <strong>–</strong> ont envoyé des chiffres</span>
+      </p>
+      <div class="segments" id="segments"></div>
+      <p class="appel__programmes" id="appel-programmes"></p>
+      <p class="appel__dernier" id="dernier">Chargement des données…</p>
+    </div>
+
+    <nav class="onglets conteneur" role="tablist" aria-label="Sections du tableau de bord">
+      <button type="button" class="onglet" role="tab" id="onglet-apercu" aria-controls="panneau-apercu" aria-selected="true" data-onglet="apercu">Vue d'ensemble</button>
+      <button type="button" class="onglet" role="tab" id="onglet-base" aria-controls="panneau-base" aria-selected="false" tabindex="-1" data-onglet="base">Base de données</button>
+      <button type="button" class="onglet" role="tab" id="onglet-historique" aria-controls="panneau-historique" aria-selected="false" tabindex="-1" data-onglet="historique">Historique <span class="onglet__badge" id="badge-historique">0</span></button>
+      <button type="button" class="onglet" role="tab" id="onglet-coordinateurs" aria-controls="panneau-coordinateurs" aria-selected="false" tabindex="-1" data-onglet="coordinateurs">Coordonnateurs et instructeurs</button>
+    </nav>
+  </header>
+
+  <main class="conteneur contenu">
+    <!-- ============================================================ Vue d'ensemble -->
+    <section class="panneau-onglet" id="panneau-apercu" role="tabpanel" aria-labelledby="onglet-apercu">
+      <div class="totaux" id="totaux" aria-label="Classes ouvertes sur classes prévues, par programme"></div>
+
+      <div class="pays-cartes" id="pays-cartes" aria-label="Totaux par pays"></div>
+
+      <article class="planche" aria-labelledby="titre-unites">
+        <header class="planche__tete">
+          <div>
+            <h2 id="titre-unites">Pieux, districts, missions et branches</h2>
+            <p class="planche__sous">Touchez une tuile pour voir ses chiffres dans la base de données.</p>
+          </div>
+        </header>
+        <div id="tuiles-unites"></div>
+        <p class="note-sans-pieu" id="note-sans-pieu" hidden></p>
+      </article>
+
+      <article class="planche" aria-labelledby="titre-effectifs">
+        <header class="planche__tete">
+          <div>
+            <h2 id="titre-effectifs">Classes par pieu, district, mission et branche</h2>
+            <p class="planche__sous">Classes prévues et classes ouvertes, d'après le dernier rapport de chaque programme.</p>
+          </div>
+          <div class="segment" role="group" aria-label="Programme affiché" id="segment-population">
+            <button type="button" data-population="total" aria-pressed="true">Ensemble</button>
+            <button type="button" data-population="sem" aria-pressed="false">Séminaire</button>
+            <button type="button" data-population="inst" aria-pressed="false">Institut</button>
+            <button type="button" data-population="rae" aria-pressed="false">Réussir à l'école</button>
+            <button type="button" data-population="mis" aria-pressed="false">Préparation missionnaire</button>
+          </div>
+        </header>
+        <div class="graphe-zone pop-total" id="graphe-zone">
+          <div class="legende" aria-hidden="true">
+            <span><i class="legende__pastille legende__pastille--clair"></i>Classes prévues</span>
+            <span><i class="legende__pastille legende__pastille--fonce"></i>Classes ouvertes</span>
+          </div>
+          <div class="graphe" id="graphe"></div>
+        </div>
+      </article>
+
+      <article class="planche" aria-labelledby="titre-programmes">
+        <header class="planche__tete">
+          <div>
+            <h2 id="titre-programmes">Programmes</h2>
+            <p class="planche__sous" id="sous-titre-programmes">Qui a envoyé, et pour combien de pieux, districts, missions et branches.</p>
+          </div>
+        </header>
+        <div class="tuiles" id="tuiles-programmes"></div>
+      </article>
+    </section>
+
+    <!-- ============================================================ Base de données -->
+    <section class="panneau-onglet" id="panneau-base" role="tabpanel" aria-labelledby="onglet-base" hidden>
+      <article class="planche">
+        <header class="planche__tete">
+          <div>
+            <h2 id="titre-base">Dernier rapport de chaque programme, par pieu, district, mission ou branche</h2>
+            <p class="planche__sous" id="sous-titre-base">–</p>
+          </div>
+          <div class="filtres">
+            <label class="recherche">
+              <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <span class="sr-only">Rechercher un pieu, un district, une mission, un programme ou un nom</span>
+              <input type="search" id="recherche-vue" placeholder="Pieu, mission, programme ou nom" autocomplete="off">
+            </label>
+            <div class="segment segment--pays" role="group" aria-label="Filtrer par pays" id="segment-pays">
+              <button type="button" data-pays="tous" aria-pressed="true">Tous</button>
+            </div>
+          </div>
+        </header>
+        <div class="table-defile">
+          <table class="table" id="table-vue"></table>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================ Historique -->
+    <section class="panneau-onglet" id="panneau-historique" role="tabpanel" aria-labelledby="onglet-historique" hidden>
+      <article class="planche">
+        <header class="planche__tete">
+          <div>
+            <h2>Tous les envois</h2>
+            <p class="planche__sous">Chaque envoi est gardé. Seul le plus récent d'un programme compte dans les totaux.</p>
+          </div>
+          <div class="filtres">
+            <label class="recherche">
+              <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <span class="sr-only">Rechercher dans l'historique</span>
+              <input type="search" id="recherche-historique" placeholder="Pieu, mission, programme, nom ou commentaire" autocomplete="off">
+            </label>
+          </div>
+        </header>
+        <div class="table-defile">
+          <table class="table" id="table-historique"></table>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============================================================ Coordonnateurs et instructeurs -->
+    <section class="panneau-onglet" id="panneau-coordinateurs" role="tabpanel" aria-labelledby="onglet-coordinateurs" hidden>
+      <article class="planche">
+        <header class="planche__tete">
+          <div>
+            <h2>Coordonnateurs, instructeurs et programmes</h2>
+            <p class="planche__sous" id="sous-titre-equipe">Cette liste remplit le menu du formulaire. Une personne inactive n'y apparaît plus.</p>
+          </div>
+          <div class="filtres">
+            <div class="segment" role="group" aria-label="Filtrer par rôle" id="segment-role">
+              <button type="button" data-role="tous" aria-pressed="true">Tous</button>
+              <button type="button" data-role="Coordonnateur" aria-pressed="false">Coordonnateurs</button>
+              <button type="button" data-role="Instructeur" aria-pressed="false">Instructeurs</button>
+            </div>
+            <button type="button" class="btn btn--primary btn--sm" id="ajouter-coordinateur">
+              <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Ajouter une personne
+            </button>
+          </div>
+        </header>
+        <div class="table-defile">
+          <table class="table" id="table-coordinateurs"></table>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <!-- ============================================================ Dialogues -->
+  <dialog class="dialogue" id="dialogue-coordinateur" aria-labelledby="titre-dialogue-coordinateur">
+    <form method="dialog" class="dialogue__form" id="form-coordinateur" novalidate>
+      <header class="dialogue__tete">
+        <h2 id="titre-dialogue-coordinateur">Personne</h2>
+        <button type="button" class="btn btn--ghost btn--icone" data-fermer aria-label="Fermer">
+          <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </header>
+      <div class="dialogue__corps grille-form">
+        <label class="field grille-form__plein" data-champ="nom">
+          <span class="field__label">Nom et prénom</span>
+          <input class="input" name="nom" maxlength="120" required autocomplete="off">
+          <span class="field__erreur"></span>
+        </label>
+        <label class="field" data-champ="employee_id">
+          <span class="field__label">ID employé <span class="field__aide">facultatif</span></span>
+          <input class="input" name="employee_id" maxlength="20" inputmode="numeric" autocomplete="off">
+          <span class="field__erreur"></span>
+        </label>
+        <label class="field" data-champ="role">
+          <span class="field__label">Rôle</span>
+          <span class="select-wrap">
+            <select class="select" name="role">
+              <option value="Coordonnateur">Coordonnateur</option>
+              <option value="Instructeur">Instructeur</option>
+              <option value="Directeur de région">Directeur de région</option>
+            </select>
+            <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+          <span class="field__aide" id="aide-role" hidden></span>
+          <span class="field__erreur"></span>
+        </label>
+        <label class="field grille-form__plein" data-champ="programme">
+          <span class="field__label">Programme assigné</span>
+          <input class="input" name="programme" maxlength="160" required autocomplete="off" placeholder="Exemple : Abidjan Lagune CR (80998)">
+          <span class="field__aide">« … CR » ou sans mention : coordonnateur. « … IN » : instructeur. Le nom identifie aussi le programme et son historique : le renommer le fait repartir en attente.</span>
+          <span class="field__erreur"></span>
+        </label>
+        <label class="field grille-form__plein" data-champ="programme_affilie">
+          <span class="field__label">Programme affilié <span class="field__aide">facultatif</span></span>
+          <input class="input" name="programme_affilie" maxlength="160" autocomplete="off" placeholder="Exemple : Cocody Cote d'Ivoire Campus IN (64922)">
+          <span class="field__erreur"></span>
+        </label>
+        <label class="interrupteur grille-form__plein">
+          <input type="checkbox" name="actif" checked>
+          <span class="interrupteur__piste" aria-hidden="true"></span>
+          <span><strong>Actif</strong><span class="field__aide"> : apparaît dans le formulaire et compte parmi les programmes attendus</span></span>
+        </label>
+      </div>
+      <footer class="dialogue__pied">
+        <button type="button" class="btn btn--ghost" data-fermer>Annuler</button>
+        <button type="submit" class="btn btn--primary" id="enregistrer-coordinateur">
+          <span class="spinner" aria-hidden="true"></span><span class="btn__texte">Enregistrer</span>
+        </button>
+      </footer>
+    </form>
+  </dialog>
+
+  <dialog class="dialogue dialogue--petit" id="dialogue-confirmation" aria-labelledby="titre-confirmation">
+    <div class="dialogue__form">
+      <div class="dialogue__corps dialogue__corps--centre">
+        <span class="dialogue__icone-alerte">
+          <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        </span>
+        <h2 id="titre-confirmation">Supprimer ce rapport ?</h2>
+        <p id="texte-confirmation"></p>
+      </div>
+      <footer class="dialogue__pied">
+        <button type="button" class="btn btn--ghost" data-fermer>Annuler</button>
+        <button type="button" class="btn btn--danger" id="confirmer-suppression">Supprimer le rapport</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <div class="infobulle" id="infobulle" role="tooltip" hidden></div>
+</body>
+</html>

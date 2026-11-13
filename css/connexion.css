@@ -1,0 +1,174 @@
+/* ==========================================================================
+   Connexion administrateur : même fond bordeaux et mêmes rayons que le
+   formulaire, une seule feuille blanche au centre.
+   ========================================================================== */
+
+.page-connexion {
+  position: relative;
+  overflow-x: hidden;
+  background: linear-gradient(180deg, var(--bordeaux) 0, var(--grenat) 70%, var(--nuit) 100%) var(--nuit);
+}
+
+.page-connexion .soleil {
+  --centre: 96px;
+}
+
+.connexion {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  min-height: 100dvh;
+  padding: 44px 16px 48px;
+  text-align: center;
+  color: #fff;
+}
+
+.connexion__logo {
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 0 0 6px rgb(255 255 255 / 0.14),
+    0 20px 40px -10px rgb(20 0 6 / 0.7);
+  animation: leve 0.8s var(--courbe) 0.1s both;
+}
+
+.connexion__titre {
+  max-width: 14em;
+  margin-top: 26px;
+  font-size: clamp(30px, 7vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  animation: leve 0.8s var(--courbe) 0.22s both;
+}
+
+.connexion__intro {
+  margin-top: 12px;
+  font-size: 17px;
+  color: #fff;
+  animation: leve 0.8s var(--courbe) 0.3s both;
+}
+
+.carte-connexion {
+  width: min(440px, 100%);
+  margin-top: 30px;
+  padding: 28px 24px 22px;
+  border-radius: 20px;
+  background: var(--papier);
+  color: var(--encre);
+  text-align: left;
+  box-shadow: var(--ombre-feuille);
+  animation: leve 0.9s var(--courbe) 0.4s both;
+}
+
+.alerte {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border-left: 5px solid var(--erreur);
+  background: var(--erreur-fond);
+  color: var(--erreur);
+  font-size: 15px;
+  font-weight: 600;
+  animation: tampon 0.35s var(--ressort) both;
+}
+
+.alerte .icone {
+  margin-top: 1px;
+}
+
+.champ-mdp {
+  position: relative;
+}
+
+.champ-mdp .input {
+  height: 54px;
+  padding-left: 46px;
+  padding-right: 54px;
+  font-size: 17px;
+  letter-spacing: 0.05em;
+}
+
+.champ-mdp__cadenas {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  translate: 0 -50%;
+  color: var(--encre-2);
+  pointer-events: none;
+}
+
+.champ-mdp__oeil {
+  position: absolute;
+  right: 7px;
+  top: 50%;
+  translate: 0 -50%;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--encre-2);
+}
+
+.champ-mdp__oeil:hover {
+  background: var(--papier-2);
+  color: var(--encre);
+}
+
+.champ-mdp.is-invalide .input {
+  border-color: var(--erreur);
+}
+
+.champ-mdp.secoue {
+  animation: secoue 0.4s ease-in-out;
+}
+
+.champ-mdp__maj {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--attente);
+}
+
+.btn--bloc {
+  width: 100%;
+  min-height: 54px;
+  margin-top: 22px;
+  font-size: 16.5px;
+  border-radius: 14px;
+}
+
+.btn--bloc.is-succes {
+  --fond-btn: var(--ok);
+  --ombre-btn: #064a1b;
+}
+
+.carte-connexion__pied {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--trait);
+  font-size: 15px;
+  color: var(--encre-2);
+}
+
+@media (min-width: 640px) {
+  .connexion {
+    align-content: start;
+    padding-top: 64px;
+  }
+
+  .page-connexion .soleil {
+    --centre: 116px;
+  }
+
+  .carte-connexion {
+    padding: 34px 34px 26px;
+  }
+}

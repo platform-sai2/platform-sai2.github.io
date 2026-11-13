@@ -1,0 +1,875 @@
+/* ==========================================================================
+   Formulaire des coordonnateurs
+   Le fond est le disque bordeaux du logo ; ses rayons s'ouvrent une fois au
+   chargement. Le formulaire est une seule feuille blanche, découpée par
+   programme avec des bandeaux de couleur.
+   ========================================================================== */
+
+.page-form {
+  position: relative;
+  overflow-x: hidden;
+  background:
+    linear-gradient(180deg, var(--bordeaux) 0, #8a1131 340px, var(--grenat) 760px, var(--nuit) 1400px)
+    var(--nuit);
+}
+
+/* ---------------------------------------------------------------- En-tête */
+
+.tete {
+  position: relative;
+  z-index: 1;
+  padding: 36px 20px 0;
+  color: #fff;
+  text-align: center;
+}
+
+.tete__logo {
+  width: 112px;
+  height: 112px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 0 0 6px rgb(255 255 255 / 0.14),
+    0 20px 40px -10px rgb(20 0 6 / 0.7);
+  animation: leve 0.8s var(--courbe) 0.1s both;
+}
+
+.tete__titre {
+  margin-top: 22px;
+  font-size: clamp(36px, 9.6vw, 68px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  text-shadow: 0 2px 18px rgb(20 0 6 / 0.35);
+  animation: leve 0.8s var(--courbe) 0.25s both;
+}
+
+.tete__intro {
+  max-width: 32em;
+  margin: 16px auto 0;
+  font-size: 18px;
+  line-height: 1.45;
+  color: #fff;
+  animation: leve 0.8s var(--courbe) 0.35s both;
+}
+
+.tete__note {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 15px;
+  color: rgb(255 255 255 / 0.88);
+  animation: leve 0.8s var(--courbe) 0.42s both;
+}
+
+.tete__note .icone {
+  color: var(--rae);
+}
+
+/* ---------------------------------------------------------------- Feuille */
+
+.feuille {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+  margin: 30px 10px 0;
+  border-radius: 18px;
+  background: var(--papier);
+  box-shadow: var(--ombre-feuille);
+  animation: leve 0.9s var(--courbe) 0.5s both;
+}
+
+.formulaire > * + * {
+  border-top: 1px solid var(--trait);
+}
+
+.identite,
+.commentaire {
+  padding: 26px 20px;
+}
+
+.identite h2,
+.commentaire h2 {
+  margin-bottom: 18px;
+  font-size: 24px;
+}
+
+.commentaire h2 span {
+  font-size: 15px;
+  font-weight: 500;
+  font-stretch: 100%;
+  letter-spacing: 0;
+  color: var(--encre-3);
+}
+
+.compteur {
+  margin-top: 8px;
+  text-align: right;
+  font-size: 14px;
+  color: var(--encre-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------- Programme choisi (ticket tamponné) */
+
+.zone-programme {
+  margin-top: 20px;
+}
+
+.zone-programme__intro {
+  margin-bottom: 12px;
+  font-size: 15px;
+  color: var(--encre-2);
+}
+
+.choix-programmes {
+  display: grid;
+  gap: 12px;
+}
+
+.ticket {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 2px solid var(--encre);
+  border-radius: 12px;
+  background: var(--papier);
+  box-shadow: 5px 5px 0 var(--rae);
+  animation: tampon 0.4s var(--ressort) both;
+  transition:
+    box-shadow 0.2s var(--courbe),
+    border-color 0.2s,
+    transform 0.2s var(--courbe);
+}
+
+.ticket + .ticket {
+  animation-delay: 0.08s;
+}
+
+.ticket__icone {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--bordeaux);
+  color: #fff;
+}
+
+.ticket__corps {
+  flex: 1;
+  min-width: 0;
+}
+
+.ticket__label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--encre-2);
+}
+
+.ticket__nom {
+  display: block;
+  font-size: 18px;
+  font-weight: 800;
+  font-stretch: 110%;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.ticket__code {
+  flex: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--encre-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.ticket--choix {
+  border-color: var(--trait-fort);
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.ticket--choix:hover {
+  border-color: var(--encre-2);
+}
+
+.ticket--choix input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ticket__radio {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  border: 2px solid var(--encre-3);
+  border-radius: 50%;
+}
+
+.ticket__radio::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: var(--encre);
+  transform: scale(0);
+  transition: transform 0.25s var(--ressort);
+}
+
+.ticket--choix:has(input:checked) {
+  border-color: var(--encre);
+  box-shadow: 5px 5px 0 var(--rae);
+  transform: translate(-2px, -2px);
+}
+
+.ticket--choix:has(input:checked) .ticket__radio {
+  border-color: var(--encre);
+}
+
+.ticket--choix:has(input:checked) .ticket__radio::after {
+  transform: scale(1);
+}
+
+.ticket--choix:has(input:focus-visible) {
+  outline: 3px solid var(--encre);
+  outline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------- Pays, pieu, district, mission ou branche */
+
+.unite {
+  margin-top: 22px;
+  gap: 10px;
+}
+
+.unite > .field__label + .select-wrap {
+  margin-top: -2px;
+}
+
+.unite .drapeau,
+.succes__unite .drapeau {
+  width: 36px;
+  height: 24px;
+}
+
+.pays {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+@media (min-width: 600px) {
+  .pays {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.pays__choix {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 12px 8px 10px;
+  border: 2px solid var(--trait-fort);
+  border-radius: 12px;
+  background: var(--papier);
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.2s var(--courbe),
+    transform 0.2s var(--courbe);
+}
+
+.pays__choix:hover {
+  border-color: var(--encre-2);
+}
+
+.pays__choix input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pays__choix .drapeau {
+  width: 42px;
+  height: 28px;
+}
+
+.pays__nom {
+  font-size: 14.5px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.pays__compte {
+  font-size: 12.5px;
+  color: var(--encre-3);
+}
+
+.pays__choix:has(input:checked) {
+  border-color: var(--encre);
+  box-shadow: 4px 4px 0 var(--rae);
+  transform: translate(-2px, -2px);
+}
+
+.pays__choix:has(input:focus-visible) {
+  outline: 3px solid var(--encre);
+  outline-offset: 3px;
+}
+
+.succes__unite {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0 6px;
+  padding: 8px 14px;
+  border: 2px solid var(--encre);
+  border-radius: 10px;
+  box-shadow: 4px 4px 0 var(--rae);
+  font-weight: 800;
+  font-stretch: 110%;
+}
+
+/* ---------------------------------------------------------------- Programmes : bandeaux + lignes */
+
+.indice-verrou {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  background: var(--papier-2);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--encre-2);
+}
+
+.sections.is-verrouille .programme,
+.commentaire.is-verrouille {
+  opacity: 0.42;
+  filter: grayscale(0.6);
+}
+
+.programme {
+  transition:
+    opacity 0.5s var(--courbe),
+    filter 0.5s var(--courbe);
+}
+
+.teinte-sem {
+  --ombre-teinte: var(--grenat);
+  --sur-teinte: #fff;
+}
+
+.teinte-inst {
+  --ombre-teinte: var(--inst-ombre);
+  --sur-teinte: #fff;
+}
+
+.teinte-rae {
+  --ombre-teinte: var(--rae-ombre);
+  --sur-teinte: var(--encre);
+}
+
+.teinte-mis {
+  --ombre-teinte: #000;
+  --sur-teinte: #fff;
+}
+
+/* Le bandeau reste visible pendant qu'on remplit sa section */
+.programme__bande {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  background: var(--teinte);
+  color: var(--sur-teinte);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.2),
+    0 6px 14px -8px rgb(20 0 6 / 0.45);
+}
+
+.programme__bande .icone {
+  width: 24px;
+  height: 24px;
+}
+
+.programme__bande h2 {
+  font-size: 22px;
+}
+
+.programme__compte {
+  margin-left: auto;
+  font-size: 14.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.programme__corps {
+  padding: 4px 20px 22px;
+}
+
+.ligne {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4px 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--trait);
+}
+
+.ligne__nom {
+  display: block;
+  font-size: 16.5px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.ligne__aide {
+  display: block;
+  margin-top: 2px;
+  font-size: 14px;
+  color: var(--encre-3);
+  line-height: 1.35;
+}
+
+.num__erreur {
+  grid-column: 1 / -1;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--erreur);
+}
+
+.num__erreur:empty {
+  display: none;
+}
+
+/* Compteur − / + : les boutons portent la couleur du programme */
+.pas {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pas__btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border: 0;
+  border-radius: 11px;
+  background: var(--teinte);
+  color: var(--sur-teinte);
+  box-shadow: 0 3px 0 var(--ombre-teinte);
+  touch-action: manipulation;
+  user-select: none;
+  transition:
+    transform 0.1s var(--courbe),
+    box-shadow 0.1s var(--courbe);
+}
+
+.pas__btn .icone {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.8;
+}
+
+.pas__btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--ombre-teinte);
+}
+
+.pas__saisie {
+  width: 88px;
+  height: 50px;
+  padding: 0 4px;
+  border: 2px solid var(--trait-fort);
+  border-radius: 12px;
+  background: var(--papier);
+  text-align: center;
+  font-size: 24px;
+  font-weight: 800;
+  font-stretch: 125%;
+  font-variant-numeric: tabular-nums;
+  box-shadow: inset 0 2px 3px rgb(42 7 17 / 0.08);
+  transition:
+    border-color 0.15s,
+    background-color 0.2s,
+    box-shadow 0.2s var(--courbe);
+}
+
+.pas__saisie::placeholder {
+  color: var(--trait-fort);
+}
+
+.pas__saisie:focus {
+  outline: none;
+  border-color: var(--encre);
+  box-shadow:
+    inset 0 2px 3px rgb(42 7 17 / 0.08),
+    0 0 0 4px rgb(233 161 0 / 0.55);
+}
+
+.ligne.is-rempli .pas__saisie {
+  border-color: var(--teinte);
+  background: var(--voile);
+}
+
+.ligne.is-invalide .pas__saisie {
+  border-color: var(--erreur);
+  background: #fff8f7;
+}
+
+.ligne.is-pulse .pas__saisie {
+  animation: tic 0.25s var(--ressort);
+}
+
+.programme .jauge {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--papier-2);
+}
+
+.jauge__detail {
+  margin-right: 6px;
+  font-size: 14px;
+  color: var(--encre-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.jauge__note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--attente);
+}
+
+/* ---------------------------------------------------------------- Barre d'envoi */
+
+.barre-envoi {
+  position: sticky;
+  bottom: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+  border-radius: 0 0 18px 18px;
+  background: rgb(255 255 255 / 0.97);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 -16px 30px -20px rgb(42 7 17 / 0.45);
+}
+
+/* Avant le choix du nom, la barre reste à sa place pour ne pas couvrir la liste */
+.formulaire:has(.sections.is-verrouille) .barre-envoi {
+  position: static;
+  box-shadow: none;
+}
+
+.barre-envoi__progres {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 8px 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.barre-envoi__texte {
+  font-size: 15px;
+  color: var(--encre-2);
+}
+
+.barre-envoi__texte strong {
+  font-size: 18px;
+  font-stretch: 125%;
+  color: var(--encre);
+}
+
+.crans {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(var(--n, 15), minmax(0, 1fr));
+  gap: 3px;
+}
+
+.cran {
+  height: 10px;
+  border-radius: 3px;
+  background: var(--trait);
+  transition: background-color 0.25s;
+}
+
+.cran.is-plein {
+  background: var(--teinte);
+  animation: tic 0.3s var(--ressort);
+}
+
+.lien-discret {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--encre-2);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lien-discret:hover {
+  color: var(--bordeaux);
+}
+
+.btn--envoi {
+  min-height: 54px;
+  padding: 0 28px;
+  font-size: 16.5px;
+  border-radius: 14px;
+}
+
+/* ---------------------------------------------------------------- Confirmation */
+
+.succes {
+  padding: 44px 20px 34px;
+  text-align: center;
+}
+
+.succes:focus {
+  outline: none;
+}
+
+.succes__soleil {
+  position: relative;
+  width: 168px;
+  height: 168px;
+  margin: 0 auto 18px;
+}
+
+.succes__soleil::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from -90deg, rgb(233 161 0 / 0.75) 0deg 5deg, transparent 5deg 15deg);
+  -webkit-mask-image: radial-gradient(circle, transparent 38%, #000 40%, transparent 70%);
+  mask-image: radial-gradient(circle, transparent 38%, #000 40%, transparent 70%);
+  animation: rayons 0.9s var(--courbe) both;
+}
+
+.succes__check {
+  position: absolute;
+  inset: 44px;
+}
+
+.succes__check circle {
+  fill: var(--bordeaux);
+  transform-origin: center;
+  animation: tampon 0.45s var(--ressort) both;
+}
+
+.succes__check path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+  animation: trace 0.4s var(--courbe) 0.35s forwards;
+}
+
+.succes h2 {
+  font-size: 32px;
+}
+
+.succes__texte {
+  max-width: 30em;
+  margin: 12px auto 0;
+  font-size: 17px;
+  color: var(--encre-2);
+}
+
+.recap {
+  width: 100%;
+  margin: 28px 0;
+  border-collapse: collapse;
+  font-size: 15px;
+  text-align: right;
+}
+
+.recap th,
+.recap td {
+  padding: 11px 8px;
+  border-bottom: 1px solid var(--trait);
+}
+
+.recap thead th {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--encre-2);
+  vertical-align: bottom;
+}
+
+.recap tbody th {
+  text-align: left;
+  font-weight: 700;
+  border-left: 5px solid var(--teinte);
+  padding-left: 12px;
+}
+
+.recap td {
+  white-space: nowrap;
+  font-size: 18px;
+  font-weight: 800;
+  font-stretch: 125%;
+  font-variant-numeric: tabular-nums;
+}
+
+.succes__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+
+/* ---------------------------------------------------------------- Pied */
+
+.pied {
+  position: relative;
+  z-index: 1;
+  padding: 28px 16px 36px;
+  text-align: center;
+  font-size: 14px;
+  color: rgb(255 255 255 / 0.78);
+}
+
+/* ---------------------------------------------------------------- Écrans */
+
+@media (min-width: 640px) {
+  .tete {
+    padding-top: 48px;
+  }
+
+  .soleil {
+    --centre: 104px;
+  }
+
+  .feuille {
+    margin: 40px auto 0;
+    border-radius: 22px;
+  }
+
+  .barre-envoi {
+    border-radius: 0 0 22px 22px;
+  }
+
+  .identite,
+  .commentaire {
+    padding: 32px 36px;
+  }
+
+  .programme__bande {
+    padding: 16px 36px;
+  }
+
+  .programme__corps {
+    padding: 6px 36px 28px;
+  }
+
+  .barre-envoi {
+    padding-left: 36px;
+    padding-right: 24px;
+  }
+
+  .succes {
+    padding: 56px 48px 44px;
+  }
+}
+
+@media (max-width: 520px) {
+  .barre-envoi {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .btn--envoi {
+    width: 100%;
+  }
+
+  /* Sur téléphone, le récapitulatif passe en blocs : un programme par bloc, ses trois chiffres côte à côte */
+  .recap,
+  .recap tbody {
+    display: block;
+  }
+
+  .recap thead {
+    display: none;
+  }
+
+  .recap tr {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-bottom: 12px;
+    border-left: 5px solid var(--teinte);
+  }
+
+  .recap tbody th {
+    grid-column: 1 / -1;
+    border-left: 0;
+    padding: 9px 12px;
+  }
+
+  .recap td {
+    display: grid;
+    gap: 2px;
+    justify-items: start;
+    padding: 9px 12px;
+    white-space: normal;
+    font-size: 17px;
+  }
+
+  .recap td::before {
+    content: attr(data-label);
+    font-size: 13.5px;
+    font-weight: 600;
+    font-stretch: 100%;
+    color: var(--encre-2);
+    text-align: left;
+  }
+}
+
+@media (max-width: 380px) {
+  .pas {
+    gap: 6px;
+  }
+
+  .pas__btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .pas__saisie {
+    width: 74px;
+    font-size: 21px;
+  }
+}

@@ -1,0 +1,735 @@
+/* ==========================================================================
+   Statistiques S&I — fondations
+   Le fond bordeaux est le disque du logo ; les feuilles blanches sont la page
+   du livre ouvert. Chaque programme a sa teinte, partout où il apparaît :
+   Séminaire = bordeaux, Institut = indigo, Réussir à l'école = souci,
+   préparation missionnaire = encre.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* Marque */
+  --bordeaux: #a01637; /* couleur exacte du logo */
+  --bordeaux-clair: #e8a3b4; /* inscrits (paire ordinale validée) */
+  --bordeaux-voile: #f6dde3;
+  --grenat: #6e0b25; /* ombres portées des boutons bordeaux */
+  --nuit: #2a0711; /* fond le plus profond */
+
+  /* Programmes (palette catégorielle validée daltonisme) */
+  --sem: var(--bordeaux);
+  --sem-clair: var(--bordeaux-clair);
+  --inst: #2f4db5; /* indigo des teintures d'Afrique de l'Ouest */
+  --inst-clair: #9eb0e6;
+  --inst-voile: #dfe5f8;
+  --inst-ombre: #1c2f75;
+  --rae: #e9a100; /* souci — toujours accompagné d'un libellé chiffré */
+  --rae-voile: #fbefc8;
+  --rae-ombre: #9a6a00;
+
+  /* Préparation missionnaire : encre, nettement distincte des trois teintes des programmes */
+  --mis: #2a1a1f;
+  --mis-voile: #ece5e7;
+
+  /* Encre et papier */
+  --encre: #1c1013;
+  --encre-2: #4b3a40; /* texte secondaire : contraste ≥ 9:1 sur blanc */
+  --encre-3: #6d5a61; /* indications : contraste ≥ 6:1 sur blanc */
+  --trait: #d8cdd1;
+  --trait-fort: #b9a8ae;
+  --papier: #ffffff;
+  --papier-2: #f7f3f4;
+  --fond: #efe9eb;
+
+  /* Statuts — toujours avec icône et libellé */
+  --ok: #0d7a2e;
+  --ok-fond: #dcf2e2;
+  --attente: #7a4d00;
+  --attente-fond: #ffeec2;
+  --erreur: #b3261e;
+  --erreur-fond: #fde4e2;
+
+  --police: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Ombres : douces et profondes pour les feuilles, franches pour ce qui se presse */
+  --ombre-feuille:
+    0 1px 0 rgb(255 255 255 / 0.6) inset,
+    0 2px 4px rgb(20 0 6 / 0.18),
+    0 22px 44px -12px rgb(20 0 6 / 0.45),
+    0 70px 120px -40px rgb(20 0 6 / 0.55);
+  --ombre-carte:
+    0 1px 2px rgb(42 7 17 / 0.1),
+    0 6px 14px -4px rgb(42 7 17 / 0.14),
+    0 22px 40px -20px rgb(42 7 17 / 0.32);
+  --ombre-flottante:
+    0 2px 6px rgb(42 7 17 / 0.16),
+    0 28px 60px -18px rgb(42 7 17 / 0.5);
+
+  --courbe: cubic-bezier(0.22, 1, 0.36, 1);
+  --ressort: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ---------------------------------------------------------------- Base */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--fond);
+  color: var(--encre);
+  font-family: var(--police);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-stretch: 125%;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: var(--bordeaux);
+  font-weight: 600;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+::selection {
+  background: var(--rae);
+  color: var(--encre);
+}
+
+:focus-visible {
+  outline: 3px solid var(--encre);
+  outline-offset: 2px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.icone {
+  width: 1.2em;
+  height: 1.2em;
+  flex: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.chiffre {
+  font-stretch: 125%;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Drapeaux (Côte d'Ivoire, Bénin, Togo) : un liseré pour que le blanc reste visible sur fond blanc */
+.drapeau {
+  display: inline-block;
+  flex: none;
+  vertical-align: -2px;
+  border-radius: 3px;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px rgb(28 16 19 / 0.2);
+}
+
+/* ---------------------------------------------------------------- Boutons
+   Un bouton est un bloc posé sur son ombre : il s'enfonce quand on appuie. */
+
+.btn {
+  --fond-btn: var(--papier);
+  --encre-btn: var(--encre);
+  --ombre-btn: var(--trait-fort);
+  --enfonce: 4px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 46px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--fond-btn);
+  color: var(--encre-btn);
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.1;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow:
+    0 var(--enfonce) 0 var(--ombre-btn),
+    0 calc(var(--enfonce) + 8px) 16px -8px rgb(20 0 6 / 0.45);
+  transform: translateY(0);
+  transition:
+    transform 0.12s var(--courbe),
+    box-shadow 0.12s var(--courbe),
+    filter 0.2s;
+}
+
+.btn:hover {
+  filter: brightness(1.06);
+}
+
+.btn:active {
+  transform: translateY(calc(var(--enfonce) - 1px));
+  box-shadow:
+    0 1px 0 var(--ombre-btn),
+    0 2px 6px -2px rgb(20 0 6 / 0.4);
+}
+
+.btn:disabled,
+.btn[aria-busy="true"] {
+  cursor: progress;
+  filter: saturate(0.6);
+}
+
+.btn--primary {
+  --fond-btn: var(--bordeaux);
+  --encre-btn: #fff;
+  --ombre-btn: var(--grenat);
+}
+
+.btn--white {
+  --fond-btn: #fff;
+  --encre-btn: var(--bordeaux);
+  --ombre-btn: var(--nuit);
+}
+
+.btn--light {
+  --fond-btn: rgb(255 255 255 / 0.14);
+  --encre-btn: #fff;
+  --ombre-btn: rgb(0 0 0 / 0.35);
+  border: 1px solid rgb(255 255 255 / 0.28);
+}
+
+.btn--souci {
+  --fond-btn: var(--rae);
+  --encre-btn: var(--encre);
+  --ombre-btn: var(--rae-ombre);
+}
+
+.btn--danger {
+  --fond-btn: var(--erreur);
+  --encre-btn: #fff;
+  --ombre-btn: #6e140f;
+}
+
+.btn--ghost {
+  --encre-btn: var(--encre-2);
+  background: transparent;
+  box-shadow: none;
+}
+
+.btn--ghost:hover {
+  background: var(--papier-2);
+  color: var(--encre);
+  filter: none;
+}
+
+.btn--ghost:active {
+  transform: none;
+  box-shadow: none;
+}
+
+.btn--sm {
+  --enfonce: 3px;
+  min-height: 38px;
+  padding: 0 14px;
+  font-size: 14px;
+  border-radius: 10px;
+}
+
+.btn--icone {
+  width: 40px;
+  min-height: 40px;
+  padding: 0;
+}
+
+.spinner {
+  display: none;
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: tourne 0.7s linear infinite;
+}
+
+.is-loading .spinner {
+  display: block;
+}
+
+.is-loading .btn__icone {
+  display: none;
+}
+
+/* ---------------------------------------------------------------- Champs */
+
+.field {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+}
+
+.field__label {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--encre);
+}
+
+.field__aide {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--encre-3);
+}
+
+.field__erreur {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--erreur);
+}
+
+.field__erreur:empty {
+  display: none;
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  min-height: 50px;
+  padding: 12px 14px;
+  border: 2px solid var(--trait-fort);
+  border-radius: 12px;
+  background: var(--papier);
+  font-size: 17px;
+  box-shadow: inset 0 2px 3px rgb(42 7 17 / 0.07);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.2s var(--courbe);
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--encre-3);
+}
+
+.input:hover,
+.select:hover,
+.textarea:hover {
+  border-color: var(--encre-3);
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--encre);
+  box-shadow:
+    inset 0 2px 3px rgb(42 7 17 / 0.07),
+    0 0 0 4px rgb(233 161 0 / 0.55);
+}
+
+.textarea {
+  min-height: 110px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.select-wrap {
+  position: relative;
+}
+
+.select {
+  appearance: none;
+  padding-right: 46px;
+  font-weight: 600;
+  cursor: pointer;
+  text-overflow: ellipsis;
+}
+
+.select:disabled {
+  cursor: progress;
+  background: var(--papier-2);
+}
+
+.select-wrap .icone {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  translate: 0 -50%;
+  color: var(--encre);
+  pointer-events: none;
+}
+
+.is-invalid .input,
+.is-invalid .select {
+  border-color: var(--erreur);
+  background: #fff8f7;
+}
+
+/* ---------------------------------------------------------------- Étiquettes de statut */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 8px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.pill .icone {
+  width: 15px;
+  height: 15px;
+  stroke-width: 2.6;
+}
+
+.pill--good {
+  background: var(--ok-fond);
+  color: var(--ok);
+}
+
+.pill--warn {
+  background: var(--attente-fond);
+  color: var(--attente);
+}
+
+.pill--neutre {
+  background: var(--papier-2);
+  color: var(--encre-2);
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+
+.code {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--encre-3);
+}
+
+/* ---------------------------------------------------------------- Jauges */
+
+/* La teinte vient du programme parent (.teinte-sem, .teinte-inst, .teinte-rae, .teinte-mis) */
+.jauge {
+  display: grid;
+  gap: 8px;
+}
+
+.jauge__tete {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 15px;
+  color: var(--encre-2);
+}
+
+.jauge__val {
+  font-size: 17px;
+  font-weight: 800;
+  font-stretch: 125%;
+  color: var(--encre);
+}
+
+.jauge__piste {
+  height: 12px;
+  border-radius: 6px;
+  background: var(--voile, var(--bordeaux-voile));
+  box-shadow: inset 0 1px 2px rgb(42 7 17 / 0.12);
+  overflow: hidden;
+}
+
+.jauge__barre {
+  width: 0;
+  height: 100%;
+  border-radius: 6px;
+  background: var(--teinte, var(--bordeaux));
+  transition: width 0.7s var(--courbe);
+}
+
+.jauge.is-depasse .jauge__barre {
+  background: repeating-linear-gradient(135deg, var(--rae) 0 8px, #c98a00 8px 16px);
+}
+
+.teinte-sem {
+  --teinte: var(--sem);
+  --voile: var(--bordeaux-voile);
+}
+
+.teinte-inst {
+  --teinte: var(--inst);
+  --voile: var(--inst-voile);
+}
+
+.teinte-rae {
+  --teinte: var(--rae);
+  --voile: var(--rae-voile);
+}
+
+.teinte-mis {
+  --teinte: var(--mis);
+  --voile: var(--mis-voile);
+}
+
+/* ---------------------------------------------------------------- Soleil (rayons du logo) */
+
+/* Cadre qui découpe les rayons : sans lui, les téléphones dézooment la page
+   pour afficher les 1 800 px du soleil. */
+.soleil {
+  --centre: 92px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1000px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.soleil__rayons,
+.soleil__lueur {
+  position: absolute;
+  left: var(--centre-x, 50%);
+  top: var(--centre);
+  translate: -50% -50%;
+  border-radius: 50%;
+}
+
+.soleil__rayons {
+  width: 1800px;
+  height: 1800px;
+  background: repeating-conic-gradient(from -90deg, rgb(255 206 120 / 0.17) 0deg 4deg, transparent 4deg 13deg);
+  -webkit-mask-image: radial-gradient(circle, #000 4%, rgb(0 0 0 / 0.6) 22%, transparent 46%);
+  mask-image: radial-gradient(circle, #000 4%, rgb(0 0 0 / 0.6) 22%, transparent 46%);
+  animation: rayons 1.6s var(--courbe) both;
+}
+
+.soleil__lueur {
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, rgb(233 161 0 / 0.42), rgb(233 161 0 / 0.12) 40%, transparent 70%);
+  animation: leve 1.2s var(--courbe) 0.2s both;
+}
+
+/* ---------------------------------------------------------------- Notifications */
+
+.toasts {
+  position: fixed;
+  z-index: 100;
+  left: 50%;
+  top: max(14px, env(safe-area-inset-top));
+  translate: -50% 0;
+  display: grid;
+  gap: 10px;
+  width: min(460px, calc(100vw - 28px));
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 14px 16px 14px 14px;
+  border-radius: 12px;
+  border-left: 6px solid var(--rae);
+  background: var(--encre);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  box-shadow: var(--ombre-flottante);
+  pointer-events: auto;
+  animation: toastEntre 0.4s var(--ressort) both;
+}
+
+.toast .icone {
+  margin-top: 1px;
+  color: var(--rae);
+}
+
+.toast--succes {
+  border-left-color: #3ccf6a;
+}
+
+.toast--succes .icone {
+  color: #3ccf6a;
+}
+
+.toast--erreur {
+  border-left-color: #ff7b72;
+}
+
+.toast--erreur .icone {
+  color: #ff7b72;
+}
+
+.toast.is-sortie {
+  animation: toastSort 0.25s ease-in both;
+}
+
+/* ---------------------------------------------------------------- Mouvements
+   Un seul moment orchestré au chargement (les rayons du logo), puis seulement
+   des mouvements qui répondent à une action. */
+
+@keyframes rayons {
+  from {
+    opacity: 0;
+    transform: scale(0.35) rotate(-14deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes leve {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes tampon {
+  0% {
+    opacity: 0;
+    transform: scale(1.12);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes tic {
+  40% {
+    transform: translateY(-3px) scale(1.12);
+  }
+}
+
+@keyframes secoue {
+  20%,
+  60% {
+    transform: translateX(-6px);
+  }
+  40%,
+  80% {
+    transform: translateX(6px);
+  }
+}
+
+@keyframes tourne {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulsation {
+  0% {
+    box-shadow: 0 0 0 0 rgb(60 207 106 / 0.6);
+  }
+  100% {
+    box-shadow: 0 0 0 9px rgb(60 207 106 / 0);
+  }
+}
+
+@keyframes trace {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes toastEntre {
+  from {
+    opacity: 0;
+    transform: translateY(var(--toast-dy, -14px)) scale(0.97);
+  }
+}
+
+@keyframes toastSort {
+  to {
+    opacity: 0;
+    transform: translateY(calc(var(--toast-dy, -14px) * 0.6));
+  }
+}
+
+.secoue {
+  animation: secoue 0.4s ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

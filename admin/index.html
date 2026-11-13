@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://iddpcjpqabulpiikjsct.supabase.co; base-uri 'self'; form-action 'self'">
+  <meta name="referrer" content="same-origin">
+  <title>Administration · Rapport statistique S&amp;I</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#7a0f2b">
+  <link rel="icon" type="image/png" href="../img/favicon.png">
+  <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/connexion.css">
+  <script src="../js/commun.js" defer></script>
+  <script src="../js/connexion.js" defer></script>
+</head>
+<body class="page-connexion">
+  <div class="soleil" aria-hidden="true"><span class="soleil__rayons"></span><span class="soleil__lueur"></span></div>
+
+  <main class="connexion">
+    <img class="connexion__logo" src="../img/logo.png" alt="Séminaire et Institut, Afrique de l'Ouest francophone" width="104" height="104">
+    <h1 class="connexion__titre">Administration du rapport S&amp;I</h1>
+    <p class="connexion__intro">Résultats en direct, base de données et export Excel.</p>
+
+    <form class="carte-connexion" id="form-connexion" novalidate>
+      <div class="alerte" id="alerte" role="alert" hidden>
+        <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="m10.29 3.86-8.47 14.14A2 2 0 0 0 3.53 21h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <span id="alerte-texte"></span>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="mot-de-passe">Mot de passe administrateur</label>
+        <div class="champ-mdp">
+          <svg class="icone champ-mdp__cadenas" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <input class="input" id="mot-de-passe" name="motDePasse" type="password" autocomplete="current-password" required autofocus>
+          <button type="button" class="champ-mdp__oeil" id="basculer-mdp" aria-label="Afficher le mot de passe" aria-pressed="false"></button>
+        </div>
+        <p class="champ-mdp__maj" id="maj-active" hidden>Les majuscules sont verrouillées.</p>
+      </div>
+
+      <button type="submit" class="btn btn--primary btn--bloc" id="bouton-connexion">
+        <span class="spinner" aria-hidden="true"></span>
+        <span class="btn__texte">Ouvrir le tableau de bord</span>
+      </button>
+
+      <p class="carte-connexion__pied">Vous êtes coordonnateur ou instructeur ? <a href="../">Ouvrir le formulaire</a></p>
+    </form>
+  </main>
+</body>
+</html>

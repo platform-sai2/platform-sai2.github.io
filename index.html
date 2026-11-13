@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://iddpcjpqabulpiikjsct.supabase.co; base-uri 'self'; form-action 'self'">
+  <meta name="referrer" content="same-origin">
+  <title>Rapport statistique S&amp;I</title>
+  <meta name="description" content="Formulaire des coordonnateurs et des instructeurs : classes prévues et classes ouvertes du Séminaire, de l'Institut, de Réussir à l'école et de la préparation missionnaire, par pieu, district, mission et branche, Afrique de l'Ouest francophone.">
+  <meta name="theme-color" content="#7a0f2b">
+  <meta property="og:title" content="Rapport statistique S&amp;I">
+  <meta property="og:description" content="Formulaire des coordonnateurs et des instructeurs, Séminaire et Institut d'Afrique de l'Ouest francophone.">
+  <meta property="og:image" content="https://israeldah.github.io/rapport-si/img/og.jpg">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/form.css">
+  <script src="js/commun.js" defer></script>
+  <script src="js/form.js" defer></script>
+</head>
+<body class="page-form">
+  <div class="soleil" aria-hidden="true"><span class="soleil__rayons"></span><span class="soleil__lueur"></span></div>
+
+  <header class="tete">
+    <img class="tete__logo" src="img/logo.png" alt="Séminaire et Institut, Afrique de l'Ouest francophone" width="112" height="112">
+    <h1 class="tete__titre">Rapport statistique S&amp;I</h1>
+    <p class="tete__intro">Indiquez, pour chaque pieu, district, mission ou branche, le nombre de classes prévues et de classes ouvertes au Séminaire, à l'Institut, à Réussir à l'école et en préparation missionnaire.</p>
+    <p class="tete__note">
+      <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Vos chiffres restent sur cet appareil jusqu'à l'envoi.
+    </p>
+  </header>
+
+  <main class="feuille">
+    <form id="formulaire" class="formulaire" novalidate>
+      <section class="identite" aria-labelledby="titre-identite">
+        <h2 id="titre-identite">Qui remplit ce rapport ?</h2>
+        <div class="field" id="champ-coordinateur">
+          <label class="field__label" for="coordinateur">Votre nom</label>
+          <div class="select-wrap">
+            <select class="select" id="coordinateur" name="coordinateur_id" required disabled aria-describedby="coordinateur-err">
+              <option value="">Chargement de la liste…</option>
+            </select>
+            <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <p class="field__erreur" id="coordinateur-err" role="alert"></p>
+        </div>
+        <div id="zone-programme" class="zone-programme" hidden></div>
+
+        <div class="field unite" id="champ-unite" hidden>
+          <p class="field__label" id="libelle-pays">Pays</p>
+          <div class="pays" id="choix-pays" role="radiogroup" aria-labelledby="libelle-pays"></div>
+          <label class="field__label" for="unite" id="libelle-unite">Pieu, district, mission ou branche de ce rapport</label>
+          <div class="select-wrap">
+            <select class="select" id="unite" name="unite_id" required aria-describedby="unite-aide unite-err"></select>
+            <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <p class="field__aide" id="unite-aide">Un rapport par pieu, district, mission ou branche : après l'envoi, vous pourrez remplir le suivant.</p>
+          <p class="field__erreur" id="unite-err" role="alert"></p>
+        </div>
+      </section>
+
+      <div id="sections" class="sections is-verrouille"></div>
+
+      <section class="commentaire" aria-labelledby="titre-commentaire" data-verrou>
+        <h2 id="titre-commentaire">Commentaire <span>facultatif</span></h2>
+        <label class="sr-only" for="commentaire">Commentaire</label>
+        <textarea class="textarea" id="commentaire" name="commentaire" maxlength="1000" placeholder="Une difficulté, un besoin, une précision utile à l'administration"></textarea>
+        <p class="compteur"><span id="compteur-commentaire">0</span> sur 1 000 caractères</p>
+      </section>
+
+      <div class="barre-envoi" id="barre-envoi">
+        <div class="barre-envoi__progres">
+          <p class="barre-envoi__texte"><strong id="progres-nombre">0</strong> chiffres sur <span id="progres-total">8</span></p>
+          <div class="crans" id="crans" aria-hidden="true"></div>
+          <button type="button" class="lien-discret" id="reinitialiser">Tout effacer</button>
+        </div>
+        <button type="submit" class="btn btn--primary btn--envoi" id="bouton-envoi">
+          <span class="spinner" aria-hidden="true"></span>
+          <span class="btn__texte">Envoyer le rapport</span>
+        </button>
+      </div>
+    </form>
+
+    <section id="succes" class="succes" hidden tabindex="-1" aria-live="polite"></section>
+  </main>
+
+  <footer class="pied">Séminaire et Institut, Afrique de l'Ouest francophone</footer>
+</body>
+</html>
