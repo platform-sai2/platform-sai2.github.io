@@ -115,7 +115,7 @@ window.SAI = (() => {
   }
 
   // Session administrateur : le jeton remis à la connexion, gardé sur cet appareil (12 heures au plus).
-  // Le préfixe « sai2- » sépare ces clés de celles des autres sites publiés sur israeldah.github.io.
+  // Le préfixe « sai2- » distingue ces clés de celles de Platform-SAI, la première plateforme.
   const session = stockage('sai2-jeton');
   const entetesSession = () => {
     const jeton = session.lire();
